@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Define the fonts here */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+}
+
+@layer base {
+  /* Force the font onto the body */
+  body {
+    @apply bg-[#F9F9F6] text-[#111] font-sans antialiased;
+  }
+
+  /* Ensure all headings use the serif font */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
