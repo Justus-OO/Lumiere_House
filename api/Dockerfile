@@ -2,8 +2,8 @@
 FROM composer:latest AS vendor
 WORKDIR /app
 COPY composer.json composer.lock ./
-# Note: Ensure these files exist in your /api folder
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+# Run install AND dump-autoload here, where composer exists
+RUN composer install --no-dev --no-scripts --prefer-dist --optimize-autoloader
 
 # Stage 2: Final Image
 FROM php:8.3-fpm-alpine
@@ -17,12 +17,8 @@ WORKDIR /var/www
 # Copy the application code
 COPY . .
 
-# Copy the vendor directory from Stage 1
-# IMPORTANT: Ensure the path matches exactly.
+# Copy the vendor directory (which already has the optimized autoloader) from Stage 1
 COPY --from=vendor /app/vendor /var/www/vendor
-
-# Run composer dump-autoload to generate the missing file
-RUN composer dump-autoload --optimize
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
