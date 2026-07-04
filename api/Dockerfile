@@ -2,14 +2,16 @@
 FROM composer:latest AS vendor
 WORKDIR /app
 COPY composer.json composer.lock ./
-# Run install AND dump-autoload here, where composer exists
+# Ensure this install matches what your local dev expects
 RUN composer install --no-dev --no-scripts --prefer-dist --optimize-autoloader
 
 # Stage 2: Final Image
-FROM php:8.3-fpm-alpine
+# Update this tag from 8.3 to 8.4
+FROM php:8.4-fpm-alpine
 
 # Install system dependencies
 RUN apk add --no-cache libpng-dev libzip-dev zip unzip git
+# Note: In PHP 8.4, the extensions install command remains the same
 RUN docker-php-ext-install pdo pdo_mysql gd zip
 
 WORKDIR /var/www
@@ -17,7 +19,7 @@ WORKDIR /var/www
 # Copy the application code
 COPY . .
 
-# Copy the vendor directory (which already has the optimized autoloader) from Stage 1
+# Copy the vendor directory from Stage 1
 COPY --from=vendor /app/vendor /var/www/vendor
 
 # Set permissions
