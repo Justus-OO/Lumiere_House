@@ -59,12 +59,12 @@ export default function Hero({ featuredFilm, totalFilms = 0 }: HeroProps) {
       <div className="relative z-10 flex-1 flex flex-col justify-center max-w-[1920px] mx-auto w-full px-6 lg:px-12 xl:px-24 py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-24 items-center">
           
-          {/* Left: The Typography Hero */}
+
           <div className="lg:col-span-8 xl:col-span-8">
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ ...transitionConfig, delay: 0.1 }}
+transition={{ ...transitionConfig, ease: transitionConfig.ease as any, delay: 0.1 }}
               className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-6 font-sans font-medium flex items-center gap-4"
             >
               <span className="w-8 h-[1px] bg-gray-400"></span>
